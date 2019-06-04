@@ -1,9 +1,8 @@
 require 'rest-client'
 require 'json'
-require 'pry'
 
 def get_movie_data
-  JSON.parse(RestClient.get('http://www.swapi.co/api/people/')) 
+  JSON.parse(RestClient.get('http://www.swapi.co/api/people/'))
 end
 
 def show_available_characters
