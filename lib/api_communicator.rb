@@ -14,7 +14,6 @@ def get_character_movies_from_api(character_name)
   result.each do |char|
     if char["name"].downcase == character_name
       movie_list.push(char["films"])
-      binding.pry
     end
   end
 
