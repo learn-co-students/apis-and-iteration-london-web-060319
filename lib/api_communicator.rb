@@ -2,45 +2,40 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
-def get_character_movies_from_api(character_name)
-  #make the web request
-  film_hash = []
-  response_string = RestClient.get('http://www.swapi.co/api/people/')
-  response_hash = JSON.parse(response_string)
+def get_movie_data
+  JSON.parse(RestClient.get('http://www.swapi.co/api/people/')) 
+end
 
+def show_available_characters
+  data = []
+  response_hash = get_movie_data
+  response_hash["results"].each_with_index do |key,index|
+    data << "#{index+1}. #{key["name"]}"
+  end
+  data
+end
+
+def get_character_movies_from_api(character_name, response_hash)
+  film_hash = []
   response_hash["results"].each do |key|
     if key["name"].downcase == character_name
         key["films"].each do |film|
-          film_response_string = RestClient.get(film)
-          film_hash << JSON.parse(film_response_string)
+          # collect film API urls, make a web request to each URL to get the film data
+          film_hash << JSON.parse(RestClient.get(film))
         end
     end
   end
-  # iterate over the response hash to find the collection of `films` for the given
-  #   `character`
-  # collect those film API urls, make a web request to each URL to get the info
-  #  for that film
-  # return value of this method should be collection of info about each film.
-  #  i.e. an array of hashes in which each hash reps a given film
-  # this collection will be the argument given to `print_movies`
-  #  and that method will do some nice presentation stuff like puts out a list
-  #  of movies by title. Have a play around with the puts with other info about a given film.
-  film_hash
+  film_hash # array of hashes in which each hash is a given film
 end
 
 def print_movies(films)
-  # some iteration magic and puts out the movies in a nice list
   films.collect do |film|
     film["title"]
   end
 end
 
 def show_character_movies(character)
-  films = get_character_movies_from_api(character)
+  response_hash = get_movie_data
+  films = get_character_movies_from_api(character, response_hash)
   print_movies(films)
 end
-
-## BONUS
-
-# that `get_character_movies_from_api` method is probably pretty long. Does it do more than one job?
-# can you split it up into helper methods?
