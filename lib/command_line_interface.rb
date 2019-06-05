@@ -1,4 +1,3 @@
-# require "pry"
 require_relative "../lib/api_communicator.rb"
 
 def welcome
@@ -7,10 +6,10 @@ def welcome
 end
 
 def get_character_from_user
-  puts "please enter a character name"
-  puts "available characters"
+  puts "Please enter a character name"
+  puts "Available characters are:"
   puts show_available_characters
-  puts "______"
+  puts "________"
   # use gets to capture the user's input. This method should return that input, downcased.
   input = gets.chomp.downcase
 end

@@ -6,14 +6,13 @@ def get_movie_data
 end
 
 def show_available_characters
-  data = []
   response_hash = get_movie_data
-  response_hash["results"].each_with_index do |key,index|
-    data << "#{index+1}. #{key["name"]}"
+  response_hash["results"].each_with_index.collect do |key,index|
+    "#{index+1}. #{key["name"]}"
   end
-  data
 end
 
+require "pry"
 def get_character_movies_from_api(character_name, response_hash)
   film_hash = []
   response_hash["results"].each do |key|
